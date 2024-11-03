@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8">
+        <title>Задание</title>
+        <meta name="description" content="Пример задания">
+        <link rel="stylesheet" href="style.css" type="text/css">
+        <!-- viewport -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    </head>
+    <body>
+        <header>
+            <div class="money">счет: <span id="money"></span></div>
+            <div class="addPerClick">+<span id="addPerClick"></span> за клик</div>
+            <div class="addPerSecond">+<span id="addPerSecond"></span> в секунду</div>
+        </header>
+        <main>
+            <button id="clickButton"></button>
+        </main>
+        <footer>
+            <button class="upgrade" id="upgradeClick">
+                <div class="add"> + <span id="upgradeClickAdd"></span> за клик</div>
+                <div class="price" id="divPriceAdd">Стоимость: <span id="upgradeClickPrice"></span></div>
+            </button>
+            <button class="upgrade" id="upgradeAuto">
+                <div class="add"> + <span id="upgradeAutoAdd"></span> в секунду</div>
+                <div class="price" id="divPriceAuto">Стоимость: <span id="upgradeAutoPrice"></span></div>
+            </button>
+        </footer>
+        <script src="./main.js"></script>
+    </body>
+</html>
