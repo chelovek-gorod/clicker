@@ -30,17 +30,22 @@ let autoPrice = 100n
 
 let priceRate = 2n
 
-const counterUpgradeStart = 5
-let counterUpgradeAdd = counterUpgradeStart - 1
-let counterUpgradeAuto = counterUpgradeStart
+let counterUpgradeAdd = 5
+let counterUpgradeAuto = 5
 
-function getUpgradeValue(value) {
+function getUpgradeValue(value, counter) {
     const stringNumber = value.toString()
     const range = stringNumber.length - 1
     switch (stringNumber[0]) {
-        case '1' : return BigInt(2 * (10**range))
-        case '2' : return BigInt(5 * (10**range))
-        case '5' : return BigInt(10 * (10**range))
+        case '1' :
+            counter = 3
+            return BigInt(2 * (10**range))
+        case '2' :
+            counter = 1
+            return BigInt(5 * (10**range))
+        case '5' :
+            counter = 1
+            return BigInt(10 * (10**range))
     }
 }
 
@@ -94,8 +99,7 @@ function getClickUpgradeAdd() {
 
     counterUpgradeAdd--
     if (counterUpgradeAdd === 0) {
-        counterUpgradeAdd = counterUpgradeStart
-        addStep = getUpgradeValue(addStep)
+        addStep = getUpgradeValue(addStep, counterUpgradeAdd)
         upgradeClickValue.innerText = addStep.toFormat()
     }
 }
@@ -112,8 +116,7 @@ function getClickUpgradeAuto() {
 
     counterUpgradeAuto--
     if (counterUpgradeAuto === 0) {
-        counterUpgradeAuto = counterUpgradeStart
-        autoStep = getUpgradeValue(autoStep)
+        autoStep = getUpgradeValue(autoStep, counterUpgradeStart)
         upgradeAutoValue.innerText = autoStep.toFormat()
     }
 }
