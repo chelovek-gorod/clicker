@@ -12,14 +12,12 @@ const divPriceAdd = document.getElementById('divPriceAdd')
 const upgradeClickValue = document.getElementById('upgradeClickAdd')
 const upgradeClickPrice = document.getElementById('upgradeClickPrice')
 upgradeClickButton.onclick = getClickUpgradeAdd
-divPriceAdd.style.backgroundColor = 'lightGray'
 
 const upgradeAutoButton = document.getElementById('upgradeAuto')
 const divPriceAuto = document.getElementById('divPriceAuto')
 const upgradeAutoValue = document.getElementById('upgradeAutoAdd')
 const upgradeAutoPrice = document.getElementById('upgradeAutoPrice')
 upgradeAutoButton.onclick = getClickUpgradeAuto
-divPriceAuto.style.backgroundColor = 'lightGray'
 
 let money = 0n
 let add = 1n
@@ -27,10 +25,24 @@ let auto = 0n
 
 let addStep = 1n
 let autoStep = 1n
-let addPrice = 2n
-let autoPrice = 2n
+let addPrice = 200n
+let autoPrice = 100n
 
 let priceRate = 2n
+
+const counterUpgradeStart = 5
+let counterUpgradeAdd = counterUpgradeStart - 1
+let counterUpgradeAuto = counterUpgradeStart
+
+function getUpgradeValue(value) {
+    const stringNumber = value.toString()
+    const range = stringNumber.length - 1
+    switch (stringNumber[0]) {
+        case '1' : return BigInt(2 * (10**range))
+        case '2' : return BigInt(5 * (10**range))
+        case '5' : return BigInt(10 * (10**range))
+    }
+}
 
 BigInt.prototype.toFormat = function() {
     return this.toString().replace(/(\d)(?=(\d{3})+$)/g, '$1 ')
@@ -57,12 +69,13 @@ function addPerSecond(data) {
 function addMoney( number ) {
     money += number
     spanMoney.innerText = money.toFormat()
-    checkButtons()
+    
+    setTimeout(updateUpgradeButtons, 32)
 }
 
-function checkButtons() {
-    divPriceAdd.style.backgroundColor = (money < addPrice) ? 'lightGray' : 'lime'
-    divPriceAuto.style.backgroundColor = (money < autoPrice) ? 'lightGray' : 'lime'
+function updateUpgradeButtons() {
+    upgradeClickButton.classList.toggle('active', money >= addPrice)
+    upgradeAutoButton.classList.toggle('active', money >= autoPrice)
 }
 
 function getClick() {
@@ -78,6 +91,13 @@ function getClickUpgradeAdd() {
     addMoney(-addPrice)
     addPrice *= priceRate
     upgradeClickPrice.innerText = addPrice.toFormat()
+
+    counterUpgradeAdd--
+    if (counterUpgradeAdd === 0) {
+        counterUpgradeAdd = counterUpgradeStart
+        addStep = getUpgradeValue(addStep)
+        upgradeClickValue.innerText = addStep.toFormat()
+    }
 }
 
 function getClickUpgradeAuto() {
@@ -89,4 +109,11 @@ function getClickUpgradeAuto() {
     addMoney(-autoPrice)
     autoPrice *= priceRate
     upgradeAutoPrice.innerText = autoPrice.toFormat()
+
+    counterUpgradeAuto--
+    if (counterUpgradeAuto === 0) {
+        counterUpgradeAuto = counterUpgradeStart
+        autoStep = getUpgradeValue(autoStep)
+        upgradeAutoValue.innerText = autoStep.toFormat()
+    }
 }
