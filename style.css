@@ -91,7 +91,7 @@ footer {
     box-shadow: 0 3px 6px 0 aquamarine;
     overflow: hidden;
 }
-.upgrade:active {
+.upgrade.active:active {
     transform: translateY(3px);
 }
 
@@ -102,6 +102,11 @@ footer {
 .add {
     font-size: 24px;
 }
+
 .price {
+    background-color: lightGray;
+}
+
+.active .price {
     background-color: lime;
 }
