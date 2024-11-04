@@ -45,12 +45,10 @@ header div {
 
 button {
     cursor: pointer;
+    outline: none;
 }
-button:active{
-    outline: 0;
-    outline-color: transparent;
-    outline-width: 0;
-    outline-style: none;
+button:focus, button:active {
+    -webkit-tap-highlight-color: transparent;
 }
 
 #clickButton {
@@ -93,6 +91,10 @@ footer {
     box-shadow: 0 3px 6px 0 aquamarine;
     overflow: hidden;
 }
+.upgrade:active {
+    transform: translateY(3px);
+}
+
 .upgrade div {
     padding: 6px;
 }
