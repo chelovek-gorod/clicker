@@ -38,13 +38,13 @@ function getUpgradeValue(value, counter) {
     const range = stringNumber.length - 1
     switch (stringNumber[0]) {
         case '1' :
-            counter = 3
+            counter = 1
             return BigInt(2 * (10**range))
         case '2' :
             counter = 1
             return BigInt(5 * (10**range))
         case '5' :
-            counter = 1
+            counter = 3
             return BigInt(10 * (10**range))
     }
 }
