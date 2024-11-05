@@ -55,7 +55,7 @@ function getUpgradeValue(value, counter) {
             updateCounter(counter, 1)
             return BigInt(5 * (10**range))
         case '5' :
-            updateCounter(counter, 3)
+            updateCounter(counter, 2)
             return BigInt(10 * (10**range))
     }
 }
