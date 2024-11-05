@@ -30,8 +30,8 @@ let autoPrice = 100n
 
 let priceRate = 2n
 
-let counterUpgradeAdd = 5
-let counterUpgradeAuto = 5
+let counterUpgradeAdd = 2
+let counterUpgradeAuto = 3
 
 function getUpgradeValue(value, counter) {
     const stringNumber = value.toString()
