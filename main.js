@@ -8,10 +8,16 @@ const spanMoney = document.getElementById('money')
 const spanAdd = document.getElementById('addPerClick')
 const spanAuto = document.getElementById('addPerSecond')
 
+const divProgress = document.getElementById('progress')
+const spanLevel = document.getElementById('levelProgress')
+const spanLevelProgress = document.getElementById('currentProgress')
+const spanTargetProgress = document.getElementById('targetProgress')
+
 const turboButton = document.getElementById('start-turbo')
 const divTurboTimer = document.getElementById('turboCounter')
 const divTurboRate = document.getElementById('turboRate')
 const divTurboPrice = document.getElementById('divPriceTurbo')
+const spanTurboPrice = document.getElementById('turboPrice')
 turboButton.onclick = getTurboClick
 
 const button = document.getElementById('clickButton')
@@ -29,30 +35,50 @@ const upgradeAutoValue = document.getElementById('upgradeAutoAdd')
 const upgradeAutoPrice = document.getElementById('upgradeAutoPrice')
 upgradeAutoButton.onclick = getClickUpgradeAuto
 
+let level = 1n
+let levelProgress = 0n
+let nextLevelPrice = 1000n
+const nextLevelPriceRate = 2n
+const progressBarMaxWidth = document.getElementById('progressBar').offsetWidth
+let progressWidthStep = progressBarMaxWidth / Number(nextLevelPrice)
+divProgress.style.width = 0;
+spanLevel.innerText = level.toFormat()
+spanLevelProgress.innerText = levelProgress.toFormat()
+spanTargetProgress.innerText = nextLevelPrice.toFormat()
+
 let money = 0n
 let add = 1n
 let auto = 0n
 
-let turboMoneyRate = 5n
-let turboPrice = 1000n
+spanMoney.innerText = money
+spanAdd.innerText = add
+spanAuto.innerText = auto
+
+let turboMoneyRate = 2n
+let turboPrice = 200n
 const turboPriceRate = 2n
 let isTurbo = false
-let turboTimer = 30 // seconds
+let turboTimer = 10 // seconds
 let turboCount = turboTimer
 
 divTurboTimer.innerText = turboTimer
 divTurboRate.innerText = turboMoneyRate
-divTurboPrice.innerText = turboPrice.toFormat()
+spanTurboPrice.innerText = turboPrice.toFormat()
 
 let addStep = 1n
 let autoStep = 1n
-let addPrice = 200n
-let autoPrice = 100n
+let addPrice = 100n
+let autoPrice = 50n
 
 let priceRate = 2n
 
 let counterUpgradeAdd = 2
 let counterUpgradeAuto = 3
+
+upgradeClickValue.innerText = addStep.toFormat()
+upgradeClickPrice.innerText = addPrice.toFormat()
+upgradeAutoValue.innerText = autoStep.toFormat()
+upgradeAutoPrice.innerText = autoPrice.toFormat()
 
 function updateCounter(counter, value) {
     switch (counter) {
@@ -81,14 +107,6 @@ function getUpgradeValue(value, counter) {
     }
 }
 
-spanMoney.innerText = money
-spanAdd.innerText = add
-spanAuto.innerText = auto
-upgradeClickValue.innerText = addStep.toFormat()
-upgradeClickPrice.innerText = addPrice.toFormat()
-upgradeAutoValue.innerText = autoStep.toFormat()
-upgradeAutoPrice.innerText = autoPrice.toFormat()
-
 let time = 0
 requestAnimationFrame(addPerSecond)
 function addPerSecond(data) {
@@ -114,8 +132,30 @@ function addPerSecond(data) {
 function addMoney( number ) {
     money += isTurbo ? number * turboMoneyRate : number
     spanMoney.innerText = money.toFormat()
+
+    if (number > 0) updateLevelProgress(number)
     
     setTimeout(updateUpgradeButtons, 32)
+}
+
+function updateLevelProgress(number) {
+    levelProgress += number
+    if (levelProgress >= nextLevelPrice) {
+        level += 1n
+        spanLevel.innerText = level.toFormat()
+
+        levelProgress = levelProgress - nextLevelPrice
+
+        nextLevelPrice *= nextLevelPriceRate
+        spanTargetProgress.innerText = nextLevelPrice.toFormat()
+        progressWidthStep = progressBarMaxWidth / Number(nextLevelPrice)
+
+        turboMoneyRate++
+        divTurboRate.innerText = turboMoneyRate
+    }
+
+    divProgress.style.width = progressWidthStep * Number(levelProgress) + 'px'
+    spanLevelProgress.innerText = levelProgress.toFormat()
 }
 
 function updateUpgradeButtons() {
@@ -136,7 +176,7 @@ function getTurboClick() {
 
     isTurbo = true
     turboPrice *= turboPriceRate
-    divTurboPrice.innerText = turboPrice.toFormat()
+    spanTurboPrice.innerText = turboPrice.toFormat()
 
     button.classList.add('turbo')
     turboButton.classList.add('turbo')
