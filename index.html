@@ -5,7 +5,6 @@
         <title>Задание</title>
         <meta name="description" content="Пример задания">
         <link rel="stylesheet" href="style.css" type="text/css">
-        <!-- viewport -->
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     </head>
     <body>
@@ -15,14 +14,20 @@
             <div class="addPerSecond">+<span id="addPerSecond"></span> в секунду</div>
         </header>
         <main>
-            <button id="start-turbo">
-                <div class="add"><span id="turboCounter"></span> секунд X<span id="turboRate"></span> за клики</div>
-                <div class="price" id="divPriceTurbo">Доступно через: <span id="turpoPrice"></span> кликов</div>
-            </button>
-
+            <div id="progressBar">
+                <div id="progress"></div>
+                <div><b>уровень<span id="levelProgress"></span></b></div>
+                <div>
+                    <span id="currentProgress"></span> / <span id="targetProgress"></span>
+                </div>
+            </div>
             <button id="clickButton"></button>
         </main>
         <footer>
+            <button class="upgrade" id="start-turbo">
+                <div class="add"><span id="turboCounter"></span> секунд X<span id="turboRate"></span> за клики</div>
+                <div class="price" id="divPriceTurbo">Стоимость:  <span id="turboPrice"></span></div>
+            </button>
             <button class="upgrade" id="upgradeClick">
                 <div class="add"> + <span id="upgradeClickAdd"></span> за клик</div>
                 <div class="price" id="divPriceAdd">Стоимость: <span id="upgradeClickPrice"></span></div>
