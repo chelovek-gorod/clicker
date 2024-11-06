@@ -43,6 +43,10 @@ header div {
     color: aquamarine;
 }
 
+button div {
+    padding: 6px;
+}
+
 button {
     cursor: pointer;
     outline: none;
@@ -63,11 +67,36 @@ button:focus, button:active {
     border-radius: 50%;
     box-shadow: 0 3px 6px 0 aquamarine;
 
-    background-color: yellow;
+    background-color: lime;
 }
 #clickButton:active {
     top: calc(50% + 3px);
     box-shadow: 0 0 6px 0 aquamarine;
+}
+button.turbo {
+    animation: turbo 0.6s linear infinite;
+}
+@keyframes turbo {
+     0% {background-color: yellow;}
+    25% {background-color: red;}
+    50% {background-color: red;}
+    75% {background-color: yellow;}
+}
+
+#start-turbo {
+    position: relative;
+    top: 20px;
+    left: 0;
+    margin: 0;
+    padding: 0;
+    width: 320px;
+    border: 2px solid white;
+    border-radius: 0 12px 12px 0;
+    box-shadow: 0 3px 6px 0 aquamarine;
+    overflow: hidden;
+}
+#start-turbo.active:active {
+    transform: translateY(3px);
 }
 
 footer {
@@ -93,10 +122,6 @@ footer {
 }
 .upgrade.active:active {
     transform: translateY(3px);
-}
-
-.upgrade div {
-    padding: 6px;
 }
 
 .add {
