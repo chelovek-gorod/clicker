@@ -1,8 +1,18 @@
-'use strict';
+'use strict'
+
+BigInt.prototype.toFormat = function() {
+    return this.toString().replace(/(\d)(?=(\d{3})+$)/g, '$1 ')
+}
 
 const spanMoney = document.getElementById('money')
 const spanAdd = document.getElementById('addPerClick')
 const spanAuto = document.getElementById('addPerSecond')
+
+const turboButton = document.getElementById('start-turbo')
+const divTurboTimer = document.getElementById('turboCounter')
+const divTurboRate = document.getElementById('turboRate')
+const divTurboPrice = document.getElementById('divPriceTurbo')
+turboButton.onclick = getTurboClick
 
 const button = document.getElementById('clickButton')
 button.onclick = getClick
@@ -22,6 +32,17 @@ upgradeAutoButton.onclick = getClickUpgradeAuto
 let money = 0n
 let add = 1n
 let auto = 0n
+
+let turboMoneyRate = 5n
+let turboPrice = 1000n
+const turboPriceRate = 2n
+let isTurbo = false
+let turboTimer = 30 // seconds
+let turboCount = turboTimer
+
+divTurboTimer.innerText = turboTimer
+divTurboRate.innerText = turboMoneyRate
+divTurboPrice.innerText = turboPrice.toFormat()
 
 let addStep = 1n
 let autoStep = 1n
@@ -60,10 +81,6 @@ function getUpgradeValue(value, counter) {
     }
 }
 
-BigInt.prototype.toFormat = function() {
-    return this.toString().replace(/(\d)(?=(\d{3})+$)/g, '$1 ')
-}
-
 spanMoney.innerText = money
 spanAdd.innerText = add
 spanAuto.innerText = auto
@@ -78,24 +95,51 @@ function addPerSecond(data) {
     if ((data - time) >= 1000) {
         time = data
         addMoney(auto)
+
+        if (isTurbo) {
+            if (turboCount > 0) {
+                turboCount--
+            } else {
+                isTurbo = false
+                turboCount = turboTimer
+                button.classList.remove('turbo')
+                turboButton.classList.remove('turbo')
+            }
+            divTurboTimer.innerText = turboCount
+        }
     }
     requestAnimationFrame(addPerSecond)
 }
 
 function addMoney( number ) {
-    money += number
+    money += isTurbo ? number * turboMoneyRate : number
     spanMoney.innerText = money.toFormat()
     
     setTimeout(updateUpgradeButtons, 32)
 }
 
 function updateUpgradeButtons() {
+    turboButton.classList.toggle('active', money >= turboPrice)
+
     upgradeClickButton.classList.toggle('active', money >= addPrice)
     upgradeAutoButton.classList.toggle('active', money >= autoPrice)
 }
 
 function getClick() {
     addMoney(add)
+}
+
+function getTurboClick() {
+    if (money < turboPrice || isTurbo) return
+
+    addMoney(-turboPrice)
+
+    isTurbo = true
+    turboPrice *= turboPriceRate
+    divTurboPrice.innerText = turboPrice.toFormat()
+
+    button.classList.add('turbo')
+    turboButton.classList.add('turbo')
 }
 
 function getClickUpgradeAdd() {
