@@ -49,19 +49,23 @@ spanTargetProgress.innerText = nextLevelPrice.toFormat()
 let money = 0n
 let add = 1n
 let auto = 0n
+const timeRate = 13
+const timeStamp = Math.round(1000 / timeRate)
+let autoPerTimeStamp = Number(auto) / timeRate
+let autoCurrent = 0
 
 spanMoney.innerText = money
 spanAdd.innerText = add
 spanAuto.innerText = auto
 
-let turboMoneyRate = 2n
+let turboMoneyRate = 1n
 let turboPrice = 200n
 const turboPriceRate = 2n
 let isTurbo = false
 let turboTimer = 10 // seconds
-let turboCount = turboTimer
+let turboCount = turboTimer * timeRate
 
-divTurboTimer.innerText = turboTimer
+divTurboTimer.innerText = turboTimer.toFixed(1)
 divTurboRate.innerText = turboMoneyRate
 spanTurboPrice.innerText = turboPrice.toFormat()
 
@@ -110,20 +114,26 @@ function getUpgradeValue(value, counter) {
 let time = 0
 requestAnimationFrame(addPerSecond)
 function addPerSecond(data) {
-    if ((data - time) >= 1000) {
+    if ((data - time) >= timeStamp) {
         time = data
-        addMoney(auto)
+
+        autoCurrent += autoPerTimeStamp
+        if (autoCurrent >= 1) {
+            let bonus = Math.floor(autoCurrent)
+            autoCurrent -= bonus
+            addMoney( BigInt(bonus) )
+        }        
 
         if (isTurbo) {
             if (turboCount > 0) {
                 turboCount--
             } else {
                 isTurbo = false
-                turboCount = turboTimer
+                turboCount = turboTimer * timeRate
                 button.classList.remove('turbo')
                 turboButton.classList.remove('turbo')
             }
-            divTurboTimer.innerText = turboCount
+            divTurboTimer.innerText = (turboCount / timeRate).toFixed(1)
         }
     }
     requestAnimationFrame(addPerSecond)
@@ -170,7 +180,7 @@ function getClick() {
 }
 
 function getTurboClick() {
-    if (money < turboPrice || isTurbo) return
+    if (priceRate < 2 || money < turboPrice || isTurbo) return
 
     addMoney(-turboPrice)
 
@@ -204,6 +214,7 @@ function getClickUpgradeAuto() {
 
     auto += autoStep
     spanAuto.innerText = auto.toFormat()
+    autoPerTimeStamp = Number(auto) / timeRate
 
     addMoney(-autoPrice)
     autoPrice *= priceRate
