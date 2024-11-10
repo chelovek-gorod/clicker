@@ -44,6 +44,10 @@ header div {
     color: aquamarine;
 }
 
+main {
+    display: flex;
+}
+
 button div {
     padding: 4px 0;
 }
@@ -102,6 +106,9 @@ button.turbo {
     text-align: center;
     height: 25px;
     line-height: 25px;
+    font-size: 14px;
+}
+#progressBar b {
     font-size: 18px;
 }
 #progressBar #progress {
@@ -111,6 +118,10 @@ button.turbo {
     background-color: yellow;
     height: 100%;
     z-index: 0;
+}
+#progressBar .star {
+    vertical-align: text-bottom;
+    font-size: 2em;
 }
 
 
